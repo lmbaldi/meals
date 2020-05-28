@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen();
+  final Function(Meal) onToggleFavorite;
+  final bool Function(Meal) isFavorite;
+
+  const MealDetailScreen(this.onToggleFavorite, this.isFavorite);
 
   Widget _creteSectionTitle(BuildContext context, String title) {
     return Container(
@@ -68,8 +71,8 @@ class MealDetailScreen extends StatelessWidget {
             _creteSectionTitle(context, 'Passos'),
             _createSectionContainer(
               ListView.builder(
-                itemCount:  meal.steps.length,
-                itemBuilder: (ctx, index){
+                itemCount: meal.steps.length,
+                itemBuilder: (ctx, index) {
                   return Column(
                     children: <Widget>[
                       ListTile(
@@ -86,6 +89,12 @@ class MealDetailScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(isFavorite(meal) ? Icons.star : Icons.star_border),
+        onPressed: () {
+          onToggleFavorite(meal);
+        },
       ),
     );
   }
